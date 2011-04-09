@@ -1,0 +1,653 @@
+/*
+  $Id: stylesheet.css,v 1.56 2003/06/30 20:04:02 hpdl Exp $
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2003 osCommerce
+
+  Released under the GNU General Public License
+*/
+
+.boxText { font-family: Verdana, Arial, sans-serif; font-size: 10px; }
+.errorBox { font-family : Verdana, Arial, sans-serif; font-size : 10px; background: #ffb3b5; font-weight: bold; }
+.stockWarning { font-family : Verdana, Arial, sans-serif; font-size : 10px; color: #cc0033; }
+.productsNotifications { background: #f2fff7; }
+.orderEdit { font-family : Verdana, Arial, sans-serif; font-size : 10px; color: #70d250; text-decoration: underline; }
+
+BODY {
+  background: #ffffff;
+  color: #000000;
+  margin: 0px;
+}
+
+A {
+  color: #747474;
+  text-decoration: none;
+}
+
+A:hover {
+  color: #888888;
+  text-decoration: underline;
+}
+
+FORM {
+ display: inline;
+}
+
+TR.header {
+  background: #ffffff;
+}
+
+TR.headerNavigation {
+  background: #bbc3d3;
+}
+
+TD.headerNavigation {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  background: #bbc3d3;
+  color: #ffffff;
+  font-weight : bold;
+}
+
+A.headerNavigation { 
+  color: #FFFFFF;
+  font-size: 13px;  
+  font-weight: bold;
+  text-decoration: none;
+}
+
+A.headerNavigation:hover {
+  color: #FFFFFF;
+  font-size: 13px;  
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+TR.headerError {
+  background: #ff0000;
+}
+
+TD.headerError {
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 12px;
+  background: #ff0000;
+  color: #ffffff;
+  font-weight : bold;
+  text-align : center;
+}
+
+TR.headerInfo {
+  background: #00ff00;
+}
+
+TD.headerInfo {
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 12px;
+  background: #00ff00;
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+}
+
+TR.footer {
+  background: #bbc3d3;
+}
+
+TD.footer {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  background: #bbc3d3;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.infoBox {
+  background: #D3D1D1;
+}
+
+.infoBoxContents {
+  background: #FFFFFF;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+}
+
+.infoBoxNotice {
+  background: #FF8E90;
+}
+
+.infoBoxNoticeContents {
+  background: #FFE6E6;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+}
+
+TD.infoBoxHeading {
+  background-image: url(../images/infobox/corner_center.gif);
+  font-family: Arial, Verdana, sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  color: #000000;
+  display: none;
+}
+
+TD.infoBox, SPAN.infoBox {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+}
+
+TR.accountHistory-odd, TR.addressBook-odd, TR.alsoPurchased-odd, TR.payment-odd, TR.productListing-odd, TR.productReviews-odd, TR.upcomingProducts-odd, TR.shippingOptions-odd {
+  background: #202020;
+  //shopping-cart content color
+}
+
+TR.accountHistory-even, TR.addressBook-even, TR.alsoPurchased-even, TR.payment-even, TR.productListing-even, TR.productReviews-even, TR.upcomingProducts-even, TR.shippingOptions-even {
+  background: #202020;
+  //shopping-cart content color
+}
+
+TABLE.productListing {
+  border: 0px;
+  border-style: solid;
+  border-color: #202020;
+  //shopping-cart header/footer color
+  border-spacing: 1px;
+  
+}
+
+.productListing-heading {
+
+border-right:1px solid #525252; 
+border-top:0px solid #FFFFFF; 
+border-bottom:1px solid #525252; 
+text-align:center;
+ 
+
+  color: #E9E7E4;
+  font-weight: bold;
+  padding: 12px;
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  text-transform:uppercase;
+  font-size: 11px;
+  background: #202020;
+  //shopping-cart header/footer color
+}
+
+TD.productListing-data {
+border-right:1px solid #525252; 
+border-bottom:1px solid #525252; 
+text-align:center;
+vertical-align:top; 
+padding:10 10 10 10;
+
+
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 12px;
+  color: #DC1400;
+}
+
+
+
+A.pageResults {
+  color: #747474;
+}
+
+A.pageResults:hover {
+  color: #747474;
+}
+
+A.pageResults:visited {
+  color: #747474;
+}
+
+
+TD.pageHeading, DIV.pageHeading {
+ font-size: 12px;
+ color: #FFC000;
+ font-weight: bold;
+ font-family: arial;
+ text-transform: uppercase;
+
+
+  text-decoration: none;
+  height:28px;
+  width: 517x;
+  background-color: #595736;
+
+  padding-bottom:0px;
+  padding-left: 20px;
+
+}
+
+TR.subBar {
+  background: #f4f7fd;
+}
+
+TD.subBar {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  color: #000000;
+}
+
+TD.main, P.main {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+TD.smallText, SPAN.smallText, P.smallText {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  padding-left: 10px;
+}
+
+TD.accountCategory {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 13px;
+  color: #aabbdd;
+}
+
+TD.fieldKey {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+TD.fieldValue {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+}
+
+TD.tableHeading {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+SPAN.newItemInCart {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  color: #ff0000;
+}
+
+CHECKBOX, INPUT, RADIO, SELECT {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+}
+
+TEXTAREA {
+  width: 100%;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+}
+
+SPAN.greetUser {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  color: #f0a480;
+  font-weight: bold;
+}
+
+TABLE.formArea {
+  background: #f1f9fe;
+  border-color: #7b9ebd;
+  border-style: solid;
+  border-width: 1px;
+}
+
+TD.formAreaTitle {
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+SPAN.markProductOutOfStock {
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 12px;
+  color: #c76170;
+  font-weight: bold;
+}
+
+SPAN.productSpecialPrice {
+  font-family: Verdana, Arial, sans-serif;
+  color: #ff0000;
+}
+
+SPAN.errorText {
+  font-family: Verdana, Arial, sans-serif;
+  color: #ff0000;
+}
+
+
+ .pr_category{
+  font-size: 13px;
+ color: #000000;
+ text-decoration: none;
+ text-transform: uppercase;
+ font-weight: bold;
+ }
+
+ .pr_name{
+  font-size: 12px;
+ color: #E9E7E4;
+ font-weight: bold;
+ text-decoration: none;
+ text-transform: uppercase;
+
+
+
+}
+
+
+ .pr_price{
+ font-size: 13px;
+ color: #77804A;
+ font-weight: bold;
+ font-family: tahoma;
+
+ }
+
+ .pr_descr{
+ font-family: tahoma, verdana, arial;
+ font-size: 11px;
+ color: #8E8E8E;
+
+}
+
+
+
+
+.moduleRow { }
+.moduleRowOver { background-color: #D7E9F7; cursor: pointer; cursor: hand; }
+.moduleRowSelected { background-color: #E9F4FC; }
+
+.checkoutBarFrom, .checkoutBarTo { font-family: Verdana, Arial, sans-serif; font-size: 10px; color: #8c8c8c; }
+.checkoutBarCurrent { font-family: Verdana, Arial, sans-serif; font-size: 10px; color: #000000; }
+
+/* message box */
+
+.messageBox { font-family: Verdana, Arial, sans-serif; font-size: 10px; }
+.messageStackError, .messageStackWarning { font-family: Verdana, Arial, sans-serif; font-size: 10px; background-color: #ffb3b5; }
+.messageStackSuccess { font-family: Verdana, Arial, sans-serif; font-size: 10px; background-color: #99ff00; }
+
+/* input requirement */
+
+.inputRequirement { font-family: Verdana, Arial, sans-serif; font-size: 10px; color: #ff0000; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body{
+background: #202020;  
+}
+
+td{
+ font-family: tahoma, verdana, arial;
+ font-size: 11px;
+ color: #8E8E8E;
+}
+
+ .bg1{
+ background-image: url(../images/bg/bg1.gif);
+ background-repeat: repeat-x; 
+ }
+ 
+ .bg2{
+ background-image: url(../images/bg/bg1.gif);
+ background-repeat: repeat-x; 
+ }
+ 
+ .bg3{
+ background-image: url(../images/bg/bg1.gif);
+ background-repeat: repeat-x; 
+ }
+
+ .ch1{
+ padding-left: 15px;
+ }
+              
+ .ch2{
+ font-size: 10px;
+ color: #FFCC00;
+ font-weight: bold;
+ }             
+
+ .ch3{
+ font-size: 11px;
+ color: #B8C016;
+ font-weight: bold;
+ }             
+
+ .ch4{
+ font-size: 12px;
+ color: #FFE764;
+ font-family: verdana;
+ font-weight: bold;
+ }             
+
+ .ch5{
+ font-size: 11px;
+ color: #FFFFFF;
+ }             
+
+ .ch6{
+ font-size: 12px;
+ color: #FFFFFF;
+ font-weight: bold;
+ font-family: arial;
+ text-transform: uppercase;
+ }             
+
+ .ch7{
+ padding-left: 10px;
+ }
+
+ .ch8{
+ font-size: 11px;
+ color: #FFFFFF;
+ font-weight: bold;
+ }             
+
+ .ch9{
+ margin-top:5px;
+ font-size: 12px;
+ color: #C1C168;
+ font-weight: bold;
+ font-family: arial;
+ text-transform: uppercase;
+ }             
+
+ .ch10{
+ padding-left: 39px;
+ }             
+
+ .ch11{
+ font-size: 12px;
+ color: #FFC000;
+ font-weight: bold;
+ font-family: arial;
+ text-transform: uppercase;
+ }             
+
+ .ch12{
+ font-size: 11px;
+ color: #77804A;
+ font-weight: bold;
+ font-family: tahoma;
+ }             
+
+ .ch13{
+ font-size: 13px;
+ color: #77804A;
+ font-weight: bold;
+ font-family: tahoma;
+ }             
+
+ .ch14{
+ font-size: 11px;
+ color: #DC1400;
+ font-weight: bold;
+ font-family: tahoma;
+ }             
+
+ .ch15{
+ font-size: 13px;
+ color: #DC1400;
+ font-weight: bold;
+ font-family: tahoma;
+ }             
+
+ .ch16{
+ font-size: 10px;
+ color: #A3A3A3;
+ }             
+
+ .ch17{
+ font-size: 9px;
+ color: #000000;
+ }
+ 
+ .ch18{
+ font-size: 14px; 
+ color:#FFFFFF;
+ text-align: left; 
+ padding-left:20px; 
+ padding-top:10px;
+ }
+ 
+ .ch19{
+ font-size: 9px;
+ color: gray;
+ }
+ 
+ 
+ .ml1{
+ font-size: 10px;
+ color: #EEEEEE;
+ text-decoration: none;
+ }             
+
+ .ml2{
+ font-size: 10px;
+ color: #FF9C00;
+ text-decoration: none;
+ }             
+
+ .ml3{
+ font-size: 11px;
+ color: green;
+ font-weight: bold;
+ }             
+
+ .ml4{
+ font-size: 11px;
+ color: #D3D3D3;
+ font-weight: bold;
+ text-decoration: none;
+ }             
+
+ .ml5{
+ font-size: 11px;
+ color: #DE281F;
+ font-weight: bold;
+ text-decoration: none;
+ text-transform: uppercase;
+ }             
+
+ .ml6{
+ font-size: 12px;
+ color: #E9E7E4;
+ font-weight: bold;
+ text-decoration: none;
+ text-transform: uppercase;
+ }             
+
+ .ml7{
+ font-size: 12px;
+ color: #ADADAD;
+ font-weight: bold;
+ text-decoration: none;
+ text-transform: uppercase;
+ }             
+
+ .ml8{
+ font-size: 10px;
+ color: #C32F1D;
+ text-decoration: none;
+ }             
+
+ .se{            
+ width: 129px;
+ font-size: 9px;
+ color: #858585
+ }
+
+ .se2{            
+ border: #9F2415 1px solid;
+ width: 115px;
+ font-size: 9px;
+ color: #858585
+ }
+
+ .image_border{
+  border:1px solid #DAD9D7; 
+ }
+
+.trans_box2 {
+  font-family:verdana;
+  font-weight:bold;
+  padding:3px;
+  border:solid 1px #000;
+  background-image:url(../images/white.png);
+}
+
+
+.trans_box3 {
+  font-family:verdana;
+  font-weight:bold;
+  padding:3px;
+  border:solid 1px #FFF;
+  background-image:url(../images/yellow.png);
+}
+
+a.podpowiedz span {
+    display: none;
+    padding: 2px 3px;
+    margin-left: 8px;
+}
+
+a.podpowiedz:hover span{
+    display: inline;
+    position: absolute;
+	margin: 15px 0 0 5px;
+    border: 1px solid #b30000;
+    color: red;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+	text-align: center;
+}
+
+.h { display: none }
+.v { display: block }
+
+
+
+
+
+
+
+
