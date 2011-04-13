@@ -17,12 +17,16 @@
       <table cellspacing=0 cellpadding=0>
        <tr><td height=25></td></tr>
         <tr><td class=ml1><span style="padding-left: 47px"></span><%= link_to "Strona główna", root_path %><span class=ch1></span>::<span class=ch1></span><a href="/wyniki-na-zywo/">Wyniki na żywo</a><span class=ch1></span>::<span class=ch1></span><a href="/wyniki/">Rezultaty zdarzeń</a><span class=ch1></span>::
-	   
 	    <!-- <span class=ch1></span><a style="color:#FFFFFF;" href="'.$link.'/wyloguj/">Wyloguj '.mysql_result($user_query,0,"imie").'!</a><span class=ch1></span>'; -->
 	    <span class=ch1></span>
 		<%= link_to "Rejestracja", new_account_path %>
 		<span class=ch1></span>::<span class=ch1></span>
-		<%= link_to "Login", login_path %>
+		<% if !(current_user) %>
+			<%= link_to "Zaloguj", login_path %>
+		<% else %>
+			<%= link_to "Wyloguj", logout_path %>
+			<span class=ch1></span>::<span class=ch1></span>
+		<% end %>
 	   </td></tr>
 
        <tr><td height=27></td></tr>
@@ -276,83 +280,14 @@
 		 <tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
 		 
 			<!-- Kategorie lewo start -->
-			<tr><td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
-			<td width=1 bgcolor=#525252></td>
-			<td width=160><span class=ch7></span><a href="/betting/_dyscyplina='.mysql_result($query_kategorie,$i).'" class="ml4">Piłka nożna</a></td>
+			<% @rows.each do |x| %>
+			<tr>
+				<td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
+				<td width=1 bgcolor=#525252></td>
+				<td width=160><span class=ch7></span><a href="<%= x.gsub(/[ ]/, '_') %>" class="ml4"><%= x %></a></td>
 			</tr>
-			
 			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			<span style="display:none">
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska Ekstraklasa</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Spa Primera Division</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Eng Premiership</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska 1. Liga</a></td></tr>
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			
-			<tr><td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
-			<td width=1 bgcolor=#525252></td>
-			<td width=160><span class=ch7></span><a href="/betting/_dyscyplina='.mysql_result($query_kategorie,$i).'" class="ml4">Piłka nożna</a></td>
-			</tr>
-			
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			<span style="display:none">
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska Ekstraklasa</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Spa Primera Division</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Eng Premiership</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska 1. Liga</a></td></tr>
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			
-			<tr><td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
-			<td width=1 bgcolor=#525252></td>
-			<td width=160><span class=ch7></span><a href="/betting/_dyscyplina='.mysql_result($query_kategorie,$i).'" class="ml4">Piłka nożna</a></td>
-			</tr>
-			
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			<span style="display:none">
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska Ekstraklasa</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Spa Primera Division</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Eng Premiership</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska 1. Liga</a></td></tr>
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			
-			<tr><td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
-			<td width=1 bgcolor=#525252></td>
-			<td width=160><span class=ch7></span><a href="/betting/_dyscyplina='.mysql_result($query_kategorie,$i).'" class="ml4">Piłka nożna</a></td>
-			</tr>
-			
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			<span style="display:none">
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska Ekstraklasa</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Spa Primera Division</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Eng Premiership</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska 1. Liga</a></td></tr>
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			
-			<tr><td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
-			<td width=1 bgcolor=#525252></td>
-			<td width=160><span class=ch7></span><a href="/betting/_dyscyplina='.mysql_result($query_kategorie,$i).'" class="ml4">Piłka nożna</a></td>
-			</tr>
-			
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			<span style="display:none">
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska Ekstraklasa</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Spa Primera Division</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Eng Premiership</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska 1. Liga</a></td></tr>
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			
-			<tr><td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
-			<td width=1 bgcolor=#525252></td>
-			<td width=160><span class=ch7></span><a href="/betting/_dyscyplina='.mysql_result($query_kategorie,$i).'" class="ml4">Piłka nożna</a></td>
-			</tr>
-			
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
-			<span style="display:none">
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska Ekstraklasa</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Spa Primera Division</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Eng Premiership</a></td></tr>
-				<tr><td></td><td width=1 bgcolor=#525252></td><td style="padding-left:10px"><a href="#">&bull; Polska 1. Liga</a></td></tr>
-			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
+			<% end %>
 			<!-- Kategorie lewo koniec -->
 			
          <tr><td height=16></td></tr>

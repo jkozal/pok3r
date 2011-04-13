@@ -2,9 +2,16 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   before_filter :require_no_user, :only => [:new]
+  before_filter :require_user, :only => [:edit, :show]
+  
   def index
     @users = User.all
-
+	if(current_user) 
+		puts "asasasasasasasasas" 
+	else 
+		puts "dfdfdfdfdfdfdfdfdf" 
+	end
+	
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @users }

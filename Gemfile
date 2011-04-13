@@ -2,11 +2,13 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
 gem 'authlogic'
+gem 'daemons'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-
+gem 'sedna'
 # Use unicorn as the web server
 # gem 'unicorn'
 
