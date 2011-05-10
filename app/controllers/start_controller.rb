@@ -93,14 +93,14 @@
   
   def getkupon
 	if(current_user)
-		if(params[:act] == 'add' and params[:typ] and params[:match] and params[:multiple])
+		if(params[:act] == 'add' and params[:typ] and params[:match] and params[:multiple] and params[:name])
 			if(Coupon.where(:user_id => current_user.id, :stawka => -1).count < 1)
 				@k = Coupon.new(:user_id => current_user.id, :stawka => -1, :finished => false)
 				@k.save
 			end
 			@kupon = Coupon.where(:user_id => current_user.id, :stawka => -1)
 			@kupon.each do |row|
-				@event = Event.new(:coupon_id => row.id, :match_id => params[:match], :choice => params[:typ], :multiple => params[:multiple], :result => -1)
+				@event = Event.new(:coupon_id => row.id, :match_id => params[:match], :match_name => params[:name], :choice => params[:typ], :multiple => params[:multiple], :result => -1)
 				@event.save
 			end
 		elsif(params[:act] == 'rem' and params[:match])
@@ -139,6 +139,7 @@
 				end
 			end
 		end
+		@coup_all = Coupon.where(:user_id => current_user.id)
 	end
 	respond_to do |format|
 		format.html

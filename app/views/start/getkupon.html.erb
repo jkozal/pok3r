@@ -10,7 +10,7 @@
 				<span class="ch17"><%= row["e"]["n"] %></span>
 		</div></td>
 		<td><div class="trans_box2" style="float:left; width:40px; height:12px; padding:5px; font-color:red">
-				<span class="ch17"><%= row["e"]["m"] %><a onclick="remove_match(<%= row["e"]["id"] %>)"><%= image_tag "minus.png", :alt => "minus" %></a></span>
+				<span class="ch17"><%= row["e"]["m"] %><a onclick="remove_match('<%= row["e"]["id"] %>')"><%= image_tag "minus.png", :alt => "minus" %></a></span>
 		</div></td>
 		<td><div class="trans_box2" style="float:left; width:70px; height:12px; padding:5px; font-color:red">
 				<span class="ch17">Wybór: <%= row["e"]["c"] %></a></span>
@@ -33,7 +33,27 @@
 <br/>
 <table>
 	<tr><td colspan=5" width=518 bgcolor=#0029c3 height=20><span style="padding-left: 18px"></span><span class=ch11>ZATWIERDZONE KUPONY:</span></td></tr>
-
+	<% @coup_all.each do |r| %>
+		<% if(r.wygrana == 0) %>
+		<tr>
+			<td><div class="trans_box2" style="float:left; background-color:red; width:500px; height:12px; padding:5px; font-color:white">
+				<b style="color:black">Przegrany | <%= r.created_at %> | Stawka: <%= r.stawka %></b>
+			</div></td>
+		</tr>
+		<% elsif(r.wygrana == -1) %>
+		<tr>
+			<td><div class="trans_box2" style="float:left; background-color:blue; width:500px; height:12px; padding:5px; font-color:white">
+				<b style="color:black">W trakcie | <%= r.created_at %> | Stawka: <%= r.stawka %></b>
+			</div></td>
+		</tr>
+		<% else %>
+		<tr>
+			<td><div style="float:left; background-color:green; width:500px; height:12px; padding:5px; font-color:white">
+				<b style="color:black">Wygrany | <%= r.created_at %> | Stawka: <%= r.stawka %></b>
+			</div></td>
+		</tr>
+		<% end %>
+	<% end %>
 </table>
 <% else %>
 	<p>Kupon niedostępny dla niezalogowanych użytkowników.</p>

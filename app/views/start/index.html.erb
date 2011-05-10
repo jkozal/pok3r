@@ -1,3 +1,9 @@
+<% if(current_user) %>
+<% 	@stan = current_user.stan_konta.to_i %>
+<% else %>
+<%  @stan = 0 %>
+<% end %>
+
 <!-- header //-->
 
 <script>
@@ -6,8 +12,8 @@ match_list = function(param) {
 	$('#body_doc').load('/start/lista?league='+param);
 }
 
-add_match = function(typ, id, multiple) {
-	$('#kuponik').load('/start/getkupon?act=add&match='+id+'&typ='+typ+'&multiple='+multiple);
+add_match = function(typ, id, name, multiple) {
+	$('#kuponik').load('/start/getkupon?act=add&name='+name+'&match='+id+'&typ='+typ+'&multiple='+multiple);
 }
 
 remove_match = function(id) {
@@ -20,8 +26,7 @@ kupon = function() {
 
 akceptuj_kupon = function() {
 	stawka = document.getElementById("stawka").value;
-	alert(stawka);
-	if(stawka > 0) { $('#kuponik').load('/start/getkupon?act=akt&stawka='+stawka); }
+	if(stawka > 0 && stawka < <%= @stan %>) { $('#kuponik').load('/start/getkupon?act=akt&stawka='+stawka); }
 	else alert("Zla stawka!");
 }
 </script>
@@ -120,17 +125,17 @@ akceptuj_kupon = function() {
 					</td>
 					<td>
 						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a onclick="add_match(1, <%= row['game']['id'] %>, <%= row['game']['alt1'] %>)"><%= row['game']['alt1'] %></a></span>
+							<span class="ch17"><a onclick="add_match(1, <%= row['game']['id'] %>, '<%= (row['game']['description'].strip).gsub(' ', '%20') %>', <%= row['game']['alt1'] %>)"><%= row['game']['alt1'] %></a></span>
 						</div>
 					</td>
 					<td>
 						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a onclick="add_match(0, <%= row['game']['id'] %>, <%= row['game']['altx'] %>)"><%= row['game']['altx'] %></a></span>
+							<span class="ch17"><a onclick="add_match(0, <%= row['game']['id'] %>, '<%= (row['game']['description'].strip).gsub(' ', '%20') %>', <%= row['game']['altx'] %>)"><%= row['game']['altx'] %></a></span>
 						</div>
 					</td>
 					<td>
 						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a onclick="add_match(2, <%= row['game']['id'] %>, <%= row['game']['alt2'] %>)"><%= row['game']['alt2'] %></a></span>
+							<span class="ch17"><a onclick="add_match(2, <%= row['game']['id'] %>, '<%= (row['game']['description'].strip).gsub(' ', '%20') %>', <%= row['game']['alt2'] %>)"><%= row['game']['alt2'] %></a></span>
 						</div>
 					</td>
 				</tr>			
@@ -288,7 +293,7 @@ akceptuj_kupon = function() {
              <tr><td height=55><u><b>Polecamy: Hit dnia</b></u><br>Czy <%= @match_h[0]['game']['first'] %> podoła wyzwaniu i pokona na własnym terenie odwiecznego rywala?<br></td></tr> 
              <tr><td height=8></td></tr>
 
-             <tr><td class=ch12><a onclick="add_match(1, <%= @match_h[0]['game']['id'] %>, <%= @match_h[0]['game']['alt1'] %>)"><%= @match_h[0]['game']['first'] %> <span class=ch13><%= @match_h[0]['game']['alt1'] %></span></a></td></tr>
+             <tr><td class=ch12><a onclick="add_match(1, <%= @match_h[0]['game']['id'] %>, '<%= (@match_h[0]['game']['description'].strip).gsub(' ', '%20') %>', <%= @match_h[0]['game']['alt1'] %>)"><%= @match_h[0]['game']['first'] %> <span class=ch13><%= @match_h[0]['game']['alt1'] %></span></a></td></tr>
             </table>
            </td></tr>
            <tr><td height=6></td></tr>
@@ -298,9 +303,9 @@ akceptuj_kupon = function() {
             <table cellspacing=0 cellpadding=0>
 
              <tr>
-			 <td style="padding-left: 5px; padding-right: 5px;"><a onclick="add_match(0, <%= @match_h[0]['game']['id'] %>, <%= @match_h[0]['game']['altx'] %>)">Remis: <%= @match_h[0]['game']['altx'] %></a></td>
+			 <td style="padding-left: 5px; padding-right: 5px;"><a onclick="add_match(0, <%= @match_h[0]['game']['id'] %>, '<%= (@match_h[0]['game']['description'].strip).gsub(' ', '%20') %>', <%= @match_h[0]['game']['altx'] %>)">Remis: <%= @match_h[0]['game']['altx'] %></a></td>
              <td bgcolor=#585858 width=1 height=23></td>
-             <td style="padding-left: 5px; padding-right: 5px;"><a onclick="add_match(2, <%= @match_h[0]['game']['id'] %>, <%= @match_h[0]['game']['alt2'] %>)"><%= @match_h[0]['game']['second'] %>: <%= @match_h[0]['game']['alt2'] %></td>
+             <td style="padding-left: 5px; padding-right: 5px;"><a onclick="add_match(2, <%= @match_h[0]['game']['id'] %>, '<%= (@match_h[0]['game']['description'].strip).gsub(' ', '%20') %>', <%= @match_h[0]['game']['alt2'] %>)"><%= @match_h[0]['game']['second'] %>: <%= @match_h[0]['game']['alt2'] %></td>
 			 </tr>
             </table>
            </td></tr>
@@ -320,7 +325,7 @@ akceptuj_kupon = function() {
             <table cellspacing=0 cellpadding=0>
              <tr><td height=55><u><b>Polecamy: Kurs dnia</b></u><br>Gra na obcym terenie stanowi dodatkową trudność w osiągnięciu pozytywnego rezultatu. Czy gościom dopisze dziś szczęscie?</td></tr> 
              <tr><td height=8></td></tr>
-             <tr><td class=ch12><a onclick="add_match(2, <%= @match_h[1]['game']['id'] %>, <%= @match_h[1]['game']['alt2'] %>)"><%= @match_h[1]['game']['second'] %>: <span class=ch13><%= @match_h[1]['game']['alt2'] %></span></a></td></tr>
+             <tr><td class=ch12><a onclick="add_match(2, <%= @match_h[1]['game']['id'] %>, '<%= (@match_h[1]['game']['description'].strip).gsub(' ', '%20') %>', <%= @match_h[1]['game']['alt2'] %>)"><%= @match_h[1]['game']['second'] %>: <span class=ch13><%= @match_h[1]['game']['alt2'] %></span></a></td></tr>
             </table>
            </td></tr>
            <tr><td height=6></td></tr>
@@ -329,7 +334,7 @@ akceptuj_kupon = function() {
            <tr><td colspan=2>
             <table cellspacing=0 cellpadding=0>
              <tr>
-				<td style="padding-left: 5px; padding-right: 5px;"><img src="images/info.png" width="9" height="9"><a onclick="add_match(1, <%= @match_h[1]['game']['id'] %>, <%= @match_h[1]['game']['alt1'] %>)"> lub postaw na <%= @match_h[1]['game']['first'] %>: <%= @match_h[1]['game']['alt1'] %> </a></td>
+				<td style="padding-left: 5px; padding-right: 5px;"><img src="images/info.png" width="9" height="9"><a onclick="add_match(1, <%= @match_h[1]['game']['id'] %>, '<%= (@match_h[1]['game']['description'].strip).gsub(' ', '%20') %>', <%= @match_h[1]['game']['alt1'] %>)"> lub postaw na <%= @match_h[1]['game']['first'] %>: <%= @match_h[1]['game']['alt1'] %> </a></td>
 
 			</tr>
             </table>

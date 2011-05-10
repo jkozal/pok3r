@@ -16,7 +16,10 @@ end
 while($running)
 	# Replace this with your code
 	Rails.logger.auto_flushing = true
+	
+	puts "Probuje polaczyc z expekt.com.."
 	c = Curl::Easy.perform("http://www.expekt.com/exportServlet?category=SOC%25")
+	puts "Połączenie ustanowione! Rozpoczynam przetwarzanie danych"
 	c.body_str.gsub!('&lt;BR/&gt;',' ')
 	c.body_str.gsub!("'",'')
 	c.body_str.gsub!('&lt;span&gt;','')
@@ -28,7 +31,6 @@ while($running)
 			sedna.load_document c.body_str, "new", "mecze"
 			sedna.execute 'UPDATE delete collection("mecze")/punter-odds/game[data(type/@id)!="0"]'
 			puts sedna.execute "collection('mecze')"
-			sleep 10
 			match_short = sedna.execute "for $i in collection('mecze')/punter-odds/game return <rezultat id=\"{data($i/@id)}\"><nazwa>{data($i/description)}</nazwa><wynik></wynik></rezultat>"
 			match_short.each do |row|
 				mecz = XmlSimple.xml_in(row)
@@ -40,6 +42,7 @@ while($running)
 		end
 	end
 	Rails.logger.info "This daemon is still running at #{Time.now}.\n"
+	puts "Cykl zakonczony. Ponowienie za 10 sekund.."
 	sleep 10
 end
   

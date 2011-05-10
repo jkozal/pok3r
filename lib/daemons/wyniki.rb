@@ -17,13 +17,19 @@ while($running)
 	# Replace this with your code
 	Rails.logger.auto_flushing = true
 	
-	#1 Pobieranie z expekta i zapis do bazy wyników
+	puts "Probuje polaczyc z expekt.com.."
+	#pobieranie z expekta
 	c = Curl::Easy.perform("http://www.expekt.com/sports/results/list.do?categoryCode=SOC%25&datePeriod=168&sortOrderCode=2")
+	puts "Polaczenie ustanowione! Rozpoczynam przetwarzanie danych.."
 	@a = c.body_str.split('<tr class="odds_row">')
+	@wyd = []
 	for i in 1..@a.length-1 do 
 		@b = @a[i].split('<tr class="odds_row bg-vvvlightgrey">')
-		puts "Wykonywanie " + i.to_s + "/" + @a.length.to_s
-		@b.each do |row|
+		if(i%50 == 0) then
+			puts "* Ukonczono " + i.to_s + "/" + @a.length.to_s
+		end
+		@b.each do |row|		
+			# konwersja
 			@c = row.split('<span>')
 			@name = @c[1].split('</span>')
 			@name[0].gsub!(",","")
@@ -41,55 +47,58 @@ while($running)
 				@wyn = '1';
 			elsif(@rez1 < @rez2) then
 				@wyn = '2'
-			else @wyn = 'x'
+			else @wyn = '0'
 			end
-			#puts @name[0]+" "+@wyn.to_s
+			
+			# dopis do sedny i nadpisanie eventów
 			Sedna.connect :database => "test" do |sedna|
 				sedna.transaction do
-					puts sedna.execute "for $i in collection('mecze')/punter-odds/game[matches(description,'"+ @name[0] +"')] return $i"
-					sedna.execute " 
-					update replace $wynik in collection('wyniki')/wyniki/rezultat[matches(nazwa,'"+@name[0]+"')]
-					with <wynik>"+@wyn+"</wynik>"
+					sedna.execute " update replace $wynik in collection('wyniki')/wyniki/rezultat[matches(nazwa,'"+@name[0]+"')]/wynik with <wynik>"+@wyn+"</wynik>"
 				end
+			end
+			@e = Event.where(:match_name => @name[0], :result => -1)
+			@e.each do |row|
+				row.result = @wyn
+				row.save
 			end
 		end
 	end
 	
-	#2 Rozliczanie kuponów
-	@usr = User.find(:all, :order => "stan_konta DESC", :limit => 5);
-	puts @usr
-	# Sedna.connect :database => "test" do |sedna|
-		# sedna.transaction do
-			# puts sedna.execute "for $i in collection('mecze') return $i"
-			# sedna.execute 'UPDATE delete collection("wyniki")/wyniki'
-			# sedna.execute 'UPDATE insert <wyniki></wyniki> into collection("wyniki")'
-			# puts sedna.execute "for $i in collection('wyniki')/wyniki return $i"
-		# end
-	# end
+	puts "Rozliczam kursy.."
 	
-	puts 'ok'
-	# c.body_str.gsub!('&lt;BR/&gt;',' ')
-	# c.body_str.gsub!('&lt;span&gt;','')
-	# c.body_str.gsub!('&lt;/span&gt;','')
-	# c.body_str.force_encoding('UTF-8')
-	# Sedna.connect :database => "test" do |sedna|
-		# sedna.transaction do
-			# sedna.execute 'DROP DOCUMENT "new" IN COLLECTION "mecze"'
-			# sedna.load_document c.body_str, "new", "mecze"
-			# sedna.execute 'UPDATE delete collection("mecze")/punter-odds/game[data(type/@id)!="0"]'
-			# puts sedna.execute "collection('mecze')"
-			# sleep 10
-			# match_short = sedna.execute "for $i in collection('mecze')/punter-odds/game return <rezultat id=\"{data($i/@id)}\"><nazwa>{data($i/description)}</nazwa><wynik></wynik></rezultat>"
-			# match_short.each do |row|
-				# mecz = XmlSimple.xml_in(row)
-				# sedna.execute "
-					# update insert if(count(collection('wyniki')/wyniki[data(rezultat/@id) = "+mecz['id']+"])=0) 
-					# then "+row+" else() into collection(\"wyniki\")/wyniki"
-			# end
-			# puts sedna.execute "collection('wyniki')"
-		# end
-	# end
-	# Rails.logger.info "This daemon is still running at #{Time.now}.\n"
-	sleep 2
+	#rozliczenie kuponów
+	@coupon = Coupon.where(:wygrana => -1)
+	@coupon.each do |row|
+		@rozstrzygniety = 1
+		@wygrany = 1
+		@mnoznik = 1
+		@event = Event.where(:coupon_id => row.id)
+		@event.each do |roww|
+			if(roww.result == '-1')
+				@rozstrzygniety = 0
+			elsif(roww.choice != roww.result)
+				@wygrany = 0
+			else
+				@mnoznik *= roww.multiple
+			end
+		end
+		if(@rozstrzygniety == 1)
+			if(@wygrany == 1)
+				@user = User.find(row.user_id)
+				@user.stan_konta += row.stawka * @mnoznik
+				row.wygrana = row.stawka * @mnoznik
+				row.save
+				@user.save
+			else
+				row.wygrana = 0
+				row.save
+			end
+		end
+	end
+	
+	puts 'Rozliczanie kursów ukończone!'
+	puts 'Zakonczono cykl! Rozpoczynam od nowa za 10 sekund..'
+	sleep 10
+	
 end
   

@@ -10,13 +10,13 @@
 				<span class="ch17"><%= row[2] %></span>
 		</div></td>
 		<td><div class="trans_box2" style="float:left; width:25px; height:12px; padding:5px; font-color:red">
-				<span class="ch17"><a onclick="add_match(1, <%= row[6] %>, <%= row[3] %>)"><%= row[3] %></a></span>
+				<span class="ch17"><a onclick="add_match(1, <%= row[6] %>, '<%= (row[2].strip).gsub(' ', '%20') %>', <%= row[3] %>)"><%= row[3] %></a></span>
 		</div></td>
 		<td><div class="trans_box2" style="float:left; width:25px; height:12px; padding:5px; font-color:red">
-				<span class="ch17"><a onclick="add_match(0, <%= row[6] %>, <%= row[4] %>)"><%= row[4] %></span>
+				<span class="ch17"><a onclick="add_match(0, <%= row[6] %>, '<%= (row[2].strip).gsub(' ', '%20') %>', <%= row[4] %>)"><%= row[4] %></span>
 		</div></td>
 		<td><div class="trans_box2" style="float:left; width:25px; height:12px; padding:5px; font-color:red">
-				<span class="ch17"><a onclick="add_match(2, <%= row[6] %>, <%= row[5] %>)"><%= row[5] %></span>
+				<span class="ch17"><a onclick="add_match(2, <%= row[6] %>, '<%= (row[2].strip).gsub(' ', '%20') %>', <%= row[5] %>)"><%= row[5] %></span>
 		</div></td>
 	</tr>
 	<% end %>
