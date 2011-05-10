@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @coupon.user %>
+</p>
+
+<p>
+  <b>Stawka:</b>
+  <%= @coupon.stawka %>
+</p>
+
+<p>
+  <b>Finished:</b>
+  <%= @coupon.finished %>
+</p>
+
+
+<%= link_to 'Edit', edit_coupon_path(@coupon) %> |
+<%= link_to 'Back', coupons_path %>

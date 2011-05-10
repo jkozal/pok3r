@@ -1,0 +1,40 @@
+﻿<% if(current_user) %>
+<table>
+	<tr><td colspan=5" width=518 bgcolor=#d40021 height=20><span style="padding-left: 18px"></span><span class=ch11>ZDARZENIA ISTNIEJĄCE NA AKTUALNYM KUPONIE:</span></td></tr>
+	<% @tab.each do |row| %>
+	<tr>
+		<td><div class="trans_box2" style="float:left; width:100px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><%= row["e"]["d"] %> <%= row["e"]["t"] %></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><%= row["e"]["n"] %></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:40px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><%= row["e"]["m"] %><a onclick="remove_match(<%= row["e"]["id"] %>)"><%= image_tag "minus.png", :alt => "minus" %></a></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:70px; height:12px; padding:5px; font-color:red">
+				<span class="ch17">Wybór: <%= row["e"]["c"] %></a></span>
+		</div></td>
+	</tr>
+	<% end %>
+	<% if (@tab.count > 0) %>
+		<tr>
+		<td></td>
+		<td><div class="trans_box2" style="float:left; width:300px; height:20px; padding:5px; font-color:red">
+			<span class="ch17">Stawka na kupon: <input id="stawka" type="text" /></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:40px; height:20px; padding:5px; font-color:red">
+			<span class="ch17"><%= @kurs_laczny.round(2) %></span>
+		</div></td>
+		<td><a onclick="akceptuj_kupon()"><%= image_tag "add.png", :alt => "minus" %></a></td>
+	</tr>
+	<% end %>
+</table>
+<br/>
+<table>
+	<tr><td colspan=5" width=518 bgcolor=#0029c3 height=20><span style="padding-left: 18px"></span><span class=ch11>ZATWIERDZONE KUPONY:</span></td></tr>
+
+</table>
+<% else %>
+	<p>Kupon niedostępny dla niezalogowanych użytkowników.</p>
+<% end %>

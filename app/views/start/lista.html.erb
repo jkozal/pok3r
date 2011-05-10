@@ -1,0 +1,25 @@
+﻿<table>
+	<tr><td colspan=5" width=518 bgcolor=#595736 height=20><span style="padding-left: 18px"></span><span class=ch11>WYNIKI WYSZUKIWANIA DLA: <%= @comp %></span></td></tr>
+	<% puts @match %>
+	<% @match.each do |row| %>
+	<tr>
+		<td><div class="trans_box2" style="float:left; width:100px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><%= row[0] %> <%= row[1] %></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><%= row[2] %></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:25px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><a onclick="add_match(1, <%= row[6] %>, <%= row[3] %>)"><%= row[3] %></a></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:25px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><a onclick="add_match(0, <%= row[6] %>, <%= row[4] %>)"><%= row[4] %></span>
+		</div></td>
+		<td><div class="trans_box2" style="float:left; width:25px; height:12px; padding:5px; font-color:red">
+				<span class="ch17"><a onclick="add_match(2, <%= row[6] %>, <%= row[5] %>)"><%= row[5] %></span>
+		</div></td>
+	</tr>
+	<% end %>
+	<tr><td><div class="trans_box2" style="float:left; width:100px; height:12px; padding:5px; font-color:red"><a onclick="kupon()">Otwórz kupon</a>
+</table>
+<div id="kuponik"></div>

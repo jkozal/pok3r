@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  coupon: 
+  match_id: 1.5
+  choice: MyString
+  multiple: 1.5
+
+two:
+  coupon: 
+  match_id: 1.5
+  choice: MyString
+  multiple: 1.5

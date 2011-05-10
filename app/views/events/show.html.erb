@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Coupon:</b>
+  <%= @event.coupon %>
+</p>
+
+<p>
+  <b>Match:</b>
+  <%= @event.match_id %>
+</p>
+
+<p>
+  <b>Choice:</b>
+  <%= @event.choice %>
+</p>
+
+<p>
+  <b>Multiple:</b>
+  <%= @event.multiple %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

@@ -1,0 +1,10 @@
+﻿<span style="color:white">
+<% if(current_user) %>
+<p>1. Kupony użytkownika</p><br/>
+<%= @coupon.to_xml %><br/><br/>
+<p>2. Zdarzenia na kuponach</p><br/>
+<%= @event.to_xml %>
+<% else %>
+<p>Dostęp do eksportu danych mają jedynie zalogowani użytkownicy!</p>
+<% end %>
+</span>
