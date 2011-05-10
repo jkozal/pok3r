@@ -1,6 +1,8 @@
 class UserSessionsController < ApplicationController
   # GET /user_sessions/new
   # GET /user_sessions/new.xml
+  before_filter :require_no_user, :only => [:new, :create]
+  
   def new
     $user_session = UserSession.new
 
@@ -17,7 +19,7 @@ class UserSessionsController < ApplicationController
 
     respond_to do |format|
       if $user_session.save
-        format.html { redirect_to(:users, :notice => 'Login Successful') }
+        format.html { redirect_to(:root, :notice => 'Login Successful') }
         format.xml { render :xml => $user_session, :status => :created, :location => $user_session }
       else
         format.html { render :action => "new" }

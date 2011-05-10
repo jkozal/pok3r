@@ -1,8 +1,22 @@
 <%= form_for($user_session) do |f| %>
+<center>
+<div style="background-color:#000000; padding:2px 12px 2px 12px; width:300px; height:220px; border-radius: 20px; -moz-border-radius: 20px; "><br/>
+  <%= link_to (image_tag "logobi.png", :alt => "logo"), root_path %>
+  <div class="field"><br/>
+    <%= f.text_field :username, :value=>"Wprowadz swoj login.." %>
+  </div>
+  <div class="field">
+    <%= f.password_field :password, :value=>"haslo"%>
+  </div>
+  <div class="actions">
+    <%= f.submit :value=>"Zaloguj!" %>
+	<%= link_to "nowe konto |", new_account_path, :style => ['font-style:italic; font-size:11px; color:#FFFFFF'] %>
+	<%= link_to "wstecz", root_path, :style => ['font-style:italic; font-size:11px; color:#FFFFFF'] %>
+  </div>
+</div>
   <% if $user_session.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize($user_session.errors.count, "error") %> prohibited this user_session from being saved:</h2>
-
+      <h2>Podczas przetwarzania napotkano <%= pluralize($user_session.errors.count, "error") %>:</h2>
       <ul>
       <% $user_session.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -10,16 +24,5 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :username %><br />
-    <%= f.text_field :username %>
-  </div>
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.text_field :password %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+</center> 
 <% end %>

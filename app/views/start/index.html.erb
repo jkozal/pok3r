@@ -1,14 +1,32 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
-<head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<%= stylesheet_link_tag :all %>
-	<%= javascript_include_tag :defaults %>
-	<%= csrf_meta_tag %>
-</head>
-<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <!-- header //-->
-<center>
+
+<script>
+match_list = function(param) {
+	$('#body_doc').html('<br/><br/><center><img src="http://www.mothersrecipe.com/Scripts/Loading/loading.gif" /></center>');
+	$('#body_doc').load('/start/lista?league='+param);
+}
+
+add_match = function(typ, id, multiple) {
+	$('#kuponik').load('/start/getkupon?act=add&match='+id+'&typ='+typ+'&multiple='+multiple);
+}
+
+remove_match = function(id) {
+	$('#kuponik').load('/start/getkupon?act=rem&match='+id);
+}
+
+kupon = function() {
+	$('#kuponik').load('/start/getkupon');
+}
+
+akceptuj_kupon = function() {
+	stawka = document.getElementById("stawka").value;
+	alert(stawka);
+	if(stawka > 0) { $('#kuponik').load('/start/getkupon?act=akt&stawka='+stawka); }
+	else alert("Zla stawka!");
+}
+</script>
+
+<center> 
   <table cellspacing=0 cellpadding=0 width=750 height=1000px align=center>
    <tr><td valign=top>
     <table cellspacing=0 cellpadding=0>
@@ -16,16 +34,16 @@
 	 <td width=518 valign=top>
       <table cellspacing=0 cellpadding=0>
        <tr><td height=25></td></tr>
-        <tr><td class=ml1><span style="padding-left: 47px"></span><%= link_to "Strona główna", root_path %><span class=ch1></span>::<span class=ch1></span><a href="/wyniki-na-zywo/">Wyniki na żywo</a><span class=ch1></span>::<span class=ch1></span><a href="/wyniki/">Rezultaty zdarzeń</a><span class=ch1></span>::
-	    <!-- <span class=ch1></span><a style="color:#FFFFFF;" href="'.$link.'/wyloguj/">Wyloguj '.mysql_result($user_query,0,"imie").'!</a><span class=ch1></span>'; -->
-	    <span class=ch1></span>
-		<%= link_to "Rejestracja", new_account_path %>
-		<span class=ch1></span>::<span class=ch1></span>
+        <tr><td class=ml1><span style="padding-left: 47px"></span><%= link_to "Strona główna", root_path %><span class=ch1></span>::<span class=ch1></span><a href="http://livescore.com">Wyniki na żywo</a><span class=ch1></span>::<span class=ch1></span><a href="/start/xmlgenerate/">Generuj Statystyki</a><span class=ch1></span>::
+		<span class=ch1></span>
 		<% if !(current_user) %>
+			<%= link_to "Rejestracja", new_account_path %>
+			<span class=ch1></span>::<span class=ch1></span>
 			<%= link_to "Zaloguj", login_path %>
 		<% else %>
-			<%= link_to "Wyloguj", logout_path %>
+			<%= link_to "Moje konto", new_account_path %>
 			<span class=ch1></span>::<span class=ch1></span>
+			<%= link_to "Wyloguj", logout_path %>
 		<% end %>
 	   </td></tr>
 
@@ -42,15 +60,15 @@
 		<tr><td >
         <table cellspacing=0 cellpadding=0 width=240 height=92>
          <tr><td width=88 valign="middle"><%= image_tag "icons/arrow.png", :alt => "arrow", :size => "75x75" %></td>
-		 <td valign="middle"><span class=ch4><b>Twoje statystyki</b></span><br>
-		 <!-- <span class="ch5">
-			Opcja dostępna dla zalogowanych użytkowników. Zapraszamy do <a href="'.$link.'/rejestracja/">rejestracji</a> i <a href="'.$link.'/logowanie/">logowania</a>!
-		 </span> -->
-		<span class="ch5">&bull; Stan konta: </span> <span class=ml3>100 &euro;</span><br>
-		<span class="ch5">&bull; W trakcie: </span> <span class=ml3>20 &euro;</span><br>
-		<span class="ch5">&bull; Skuteczność: </span> <span class=ml3>75%</span><br>
-		<span class="ch5">&bull; Aktualna pozycja: </span> <span class=ml3>14</span><br>
-		<span style="font-size: 10px; color:orange"><%= link_to "Historia zdarzeń", "account/historia-zakladow/" %></span>
+		 <td valign="middle"><span class=ch4><b>Dane konta</b></span><br>
+		 <% if(current_user) %>
+			<span class="ch5">&bull; Twój login: </span> <span class=ml3><%= current_user.username %></span><br>
+			<span class="ch5">&bull; Dane osobowe: </span> <span class=ml3><%= current_user.imie_nazwisko %></span><br>
+			<span class="ch5">&bull; E-mail: </span> <span class=ml3><%= current_user.email %></span><br>
+			<span class="ch5">&bull; Stan konta: </span> <span class=ml3><%= current_user.stan_konta %> &euro;</span><br>
+		<% else %>
+			<span class="ch5"> Musisz się zalogować, by zobaczyć swoje dane! </span>
+		<% end %>
 		</td>
 		</tr>
         </table> 
@@ -59,8 +77,13 @@
         <table cellspacing=0 cellpadding=0 width=230 height=92>
          <tr><td width=88 valign="middle"><%= image_tag "icons/arrow.png", :alt => "arrow", :size => "75x75" %></td>
          <td valign="middle"><span class=ch4><b>Koszyk zakładów</b></span><br>
-			<span class="ch5">Twój kupon zawiera <span style="font-size: 10px; color:orange">5</span> zakład/y/ów</span><br>
-		<span style="font-size: 10px; color:orange"><%= link_to "Przejdź do kuponu", "account/kupon/" %></span>
+		 <% if(current_user) %>
+			<span class="ch5">Aktuanie <span style="font-size: 10px; color:orange"><%= @event_count %></span> zakład/y/ów</span><br/>
+			<span class="ch5">Liczba kuponów <span style="font-size: 10px; color:orange"><%= @coupon_count %></span></span><br/>
+			<span style="font-size: 10px; color:orange"><a href="#">Przejdź do kuponu</a></span>
+		<% else %>
+			<span class="ch5">Musisz się zalogować, aby zarządzać kuponem!</span>
+		<% end %>
 		</td></tr>
 
         </table> 
@@ -69,12 +92,9 @@
         <table cellspacing=0 cellpadding=0 width=230 height=92>
          <tr><td width=88 valign=middle><%= image_tag "icons/arrow.png", :alt => "arrow", :size => "75x75" %></td>
          <td valign="middle"><span class=ch4><b>TOP 5</b></span><br>
-			<span class="ch5">Gracz 1</span> <span class=ml3> 5000 &euro;</span><br>
-			<span class="ch5">Gracz 1</span> <span class=ml3> 5000 &euro;</span><br>
-			<span class="ch5">Gracz 1</span> <span class=ml3> 5000 &euro;</span><br>
-			<span class="ch5">Gracz 1</span> <span class=ml3> 5000 &euro;</span><br>
-			<span class="ch5">Gracz 1</span> <span class=ml3> 5000 &euro;</span><br>
-			<span style="font-size: 10px; color:orange"><a href="/klasyfikacja/">Pełna klasyfikacja</a></span>
+		 <% @usr.each do |row| %>
+			<span class="ch5"><%= row.username %></span> <span class=ml3> <%= row.stan_konta %> &euro;</span><br>
+		<% end %>
 		</td></tr>
         </table> 
        </td></tr>
@@ -85,180 +105,37 @@
 		<p class="ch18"><b>NAJBLIŻSZE ZAKŁADY</b></p>
 		<p style="text-align:left;">
 		<!-- start -->
+			<% @match_t.each do |row| %>
 			<table style="margin-left:15px">
 				<tr>
 					<td>
 						<div id="ten1" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten1')" onmouseout="mouseOut('ten1')">
-							<span class="ch17">11:24</span>
+							<span class="ch17"><%= row['game']['time'] %></span>
 						</div>
 					</td>
 					<td>
 						<div id="ten2" class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten2')" onmouseout="mouseOut('ten2')">
-							<div class="ch17"><a class="podpowiedz">Real - Barca<span>Piłka nożna, Primera Division, 1X2</span></a></div>
+							<div class="ch17"><a href="#"><%= row['game']['description'] %></a></div>
 						</div>
 					</td>
 					<td>
 						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=1">1.1</a></span>
+							<span class="ch17"><a onclick="add_match(1, <%= row['game']['id'] %>, <%= row['game']['alt1'] %>)"><%= row['game']['alt1'] %></a></span>
 						</div>
 					</td>
 					<td>
 						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=x">1.2</a></span>
+							<span class="ch17"><a onclick="add_match(0, <%= row['game']['id'] %>, <%= row['game']['altx'] %>)"><%= row['game']['altx'] %></a></span>
 						</div>
 					</td>
 					<td>
 						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=2">1.3</a></span>
+							<span class="ch17"><a onclick="add_match(2, <%= row['game']['id'] %>, <%= row['game']['alt2'] %>)"><%= row['game']['alt2'] %></a></span>
 						</div>
 					</td>
 				</tr>			
 			</table>
-			<table style="margin-left:15px">
-				<tr>
-					<td>
-						<div id="ten1" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten1')" onmouseout="mouseOut('ten1')">
-							<span class="ch17">11:24</span>
-						</div>
-					</td>
-					<td>
-						<div id="ten2" class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten2')" onmouseout="mouseOut('ten2')">
-							<div class="ch17"><a class="podpowiedz">Real - Barca<span>Piłka nożna, Primera Division, 1X2</span></a></div>
-						</div>
-					</td>
-					<td>
-						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=1">1.1</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=x">1.2</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=2">1.3</a></span>
-						</div>
-					</td>
-				</tr>			
-			</table>
-			<table style="margin-left: 15px">
-				<tr>
-					<td>
-						<div id="ten1" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten1')" onmouseout="mouseOut('ten1')">
-							<span class="ch17">11:24</span>
-						</div>
-					</td>
-					<td>
-						<div id="ten2" class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten2')" onmouseout="mouseOut('ten2')">
-							<div class="ch17"><a class="podpowiedz">Real - Barca<span>Piłka nożna, Primera Division, 1X2</span></a></div>
-						</div>
-					</td>
-					<td>
-						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=1">1.1</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=x">1.2</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=2">1.3</a></span>
-						</div>
-					</td>
-				</tr>			
-			</table>
-			<table style="margin-left: 15px">
-				<tr>
-					<td>
-						<div id="ten1" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten1')" onmouseout="mouseOut('ten1')">
-							<span class="ch17">11:24</span>
-						</div>
-					</td>
-					<td>
-						<div id="ten2" class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten2')" onmouseout="mouseOut('ten2')">
-							<div class="ch17"><a class="podpowiedz">Real - Barca<span>Piłka nożna, Primera Division, 1X2</span></a></div>
-						</div>
-					</td>
-					<td>
-						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=1">1.1</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=x">1.2</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=2">1.3</a></span>
-						</div>
-					</td>
-				</tr>			
-			</table>
-			<table style="margin-left:15px">
-				<tr>
-					<td>
-						<div id="ten1" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten1')" onmouseout="mouseOut('ten1')">
-							<span class="ch17">11:24</span>
-						</div>
-					</td>
-					<td>
-						<div id="ten2" class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten2')" onmouseout="mouseOut('ten2')">
-							<div class="ch17"><a class="podpowiedz">Real - Barca<span>Piłka nożna, Primera Division, 1X2</span></a></div>
-						</div>
-					</td>
-					<td>
-						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=1">1.1</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=x">1.2</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=2">1.3</a></span>
-						</div>
-					</td>
-				</tr>			
-			</table>
-			<table style="margin-left:15px">
-				<tr>
-					<td>
-						<div id="ten1" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten1')" onmouseout="mouseOut('ten1')">
-							<span class="ch17">11:24</span>
-						</div>
-					</td>
-					<td>
-						<div id="ten2" class="trans_box2" style="float:left; width:300px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten2')" onmouseout="mouseOut('ten2')">
-							<div class="ch17"><a class="podpowiedz">Real - Barca<span>Piłka nożna, Primera Division, 1X2</span></a></div>
-						</div>
-					</td>
-					<td>
-						<div id="ten3" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten3')" onmouseout="mouseOut('ten3')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=1">1.1</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten4" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten4')" onmouseout="mouseOut('ten4')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=x">1.2</a></span>
-						</div>
-					</td>
-					<td>
-						<div id="ten5" class="trans_box2" style="float:left; width:26px; height:12px; padding:5px; font-color:red" onmouseover="mouseOver('ten5')" onmouseout="mouseOut('ten5')">
-							<span class="ch17"><a href="kupon/_akcja=dodaj&kursid='.mysql_result($query2,$i,"id").'&typ=2">1.3</a></span>
-						</div>
-					</td>
-				</tr>			
-			</table>
+			<% end %>
 			<!-- koniec -->
 		</p>
 	 </td></tr>
@@ -284,7 +161,7 @@
 			<tr>
 				<td width=20 height=20 align=center><%= image_tag "gif/m11.gif", :alt => "m11", :size => "3x5", :align => "absmiddle" %></td>
 				<td width=1 bgcolor=#525252></td>
-				<td width=160><span class=ch7></span><a href="<%= x.gsub(/[ ]/, '_') %>" class="ml4"><%= x %></a></td>
+				<td width=160><span class=ch7></span><a onclick="match_list('<%= x.gsub(' ','%20') %>')" class="ml4"><%= x %></a></td>
 			</tr>
 			<tr><td bgcolor=#525252 colspan=3 height=1></td></tr>
 			<% end %>
@@ -294,10 +171,6 @@
         </table>  
        </td></tr>
        <tr><td height=3></td></tr>
-       <tr><td bgcolor=#750E00 height=28 width="400px">
-			<span style="padding-left: 19px"></span>
-			<form method="POST" action="/szukaj/"><input type="text" size="30" name="fraza" value="Szukaj zakładu (podaj drużynę)"></form>
-		</td></tr>
       </table> 
      </td>
      <td width=518 valign=top>
@@ -305,6 +178,7 @@
 <!-- header_eof //-->
 
 <!-- body //-->
+<div id="body_doc">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
 <!-- body_text //-->
@@ -338,7 +212,7 @@
            <tr>
            <td width=215 valign=top>
             <table cellspacing=0 cellpadding=0>
-             <tr><td height=55>Witamy i oferujemy Państwu <strong>darmową</strong> zabawę w typowanie wyników meczy. Cel gry jest prosty - wystarczy zwielokrotnić wirtualne 5000&euro; otrzymane od nas przy rejestracji. Pod koniec każdego miesiąca osoby z największym stanem konta zostaną nagrodzone! <a href="'.$link.'/rejestracja/"><span style="color:white">Zapraszamy do rejestracji</span></a></td></tr> 
+             <tr><td height=55>Witamy i oferujemy Państwu <strong>darmową</strong> zabawę w typowanie wyników meczy. Cel gry jest prosty - wystarczy zwielokrotnić wirtualne 5000&euro; otrzymane od nas przy rejestracji. Pod koniec każdego miesiąca osoby z największym stanem konta zostaną nagrodzone! <span style="color:white"><%= link_to "Rejestracja", new_account_path %></span></a></td></tr> 
              <tr><td height=8></td></tr>
             </table>
            </td></tr>
@@ -402,19 +276,19 @@
 		<tr>
          <td width=248 valign=top>
           <table cellspacing=0 cellpadding=0 width=219 align=center>
-           <tr><td colspan=2><a class="pr_name">PIŁKA NOŻNA</a></td></tr>
+           <tr><td colspan=2><a class="pr_name">POSTAW NA GOSPODARZA</a></td></tr>
 
-           <tr><td colspan=2><a class="ml7">POLSKA EKSTRAKLASA</a></td></tr>
+           <tr><td colspan=2><a class="ml7"><%= @match_h[0]['game']['description'] %></a></td></tr>
            <tr><td height=10></td></tr>
            <tr><td colspan=2 background="../images/gif/m15.gif" height=1></td></tr>
            <tr><td height=10></td></tr>
            <tr><td width=67 style="padding-left: 4px"><%= image_tag "icons/football.png", :alt => "football", :size => "60x60" %></td>
            <td width=148 valign=top>
             <table cellspacing=0 cellpadding=0>
-             <tr><td height=55><u><b>Polecamy: Hit dnia</b></u><br>Czy Śląsk Wrocław podoła wyzwaniu i pokona faworyzowanego przez bukmacherów rywala?<br></td></tr> 
+             <tr><td height=55><u><b>Polecamy: Hit dnia</b></u><br>Czy <%= @match_h[0]['game']['first'] %> podoła wyzwaniu i pokona na własnym terenie odwiecznego rywala?<br></td></tr> 
              <tr><td height=8></td></tr>
 
-             <tr><td class=ch12><a href="kupon/_akcja=dodaj&kursid='.$rand_id.'&typ='.$rand_x.'">Śląsk: <span class=ch13>1234.5</span></a></td></tr>
+             <tr><td class=ch12><a onclick="add_match(1, <%= @match_h[0]['game']['id'] %>, <%= @match_h[0]['game']['alt1'] %>)"><%= @match_h[0]['game']['first'] %> <span class=ch13><%= @match_h[0]['game']['alt1'] %></span></a></td></tr>
             </table>
            </td></tr>
            <tr><td height=6></td></tr>
@@ -424,9 +298,9 @@
             <table cellspacing=0 cellpadding=0>
 
              <tr>
-			 <td style="padding-left: 5px; padding-right: 5px;"><a href="kupon/_akcja=dodaj&kursid='.$rand_id.'&typ=x">Remis: 1.12</a></td>
+			 <td style="padding-left: 5px; padding-right: 5px;"><a onclick="add_match(0, <%= @match_h[0]['game']['id'] %>, <%= @match_h[0]['game']['altx'] %>)">Remis: <%= @match_h[0]['game']['altx'] %></a></td>
              <td bgcolor=#585858 width=1 height=23></td>
-             <td style="padding-left: 5px; padding-right: 5px;"><a href="kupon/_akcja=dodaj&kursid='.$rand_id.'&typ='.$rand_y.'">Wisła: 1.14</td>
+             <td style="padding-left: 5px; padding-right: 5px;"><a onclick="add_match(2, <%= @match_h[0]['game']['id'] %>, <%= @match_h[0]['game']['alt2'] %>)"><%= @match_h[0]['game']['second'] %>: <%= @match_h[0]['game']['alt2'] %></td>
 			 </tr>
             </table>
            </td></tr>
@@ -435,18 +309,18 @@
         <td width=1 bgcolor=#585858></td>
          <td width=248 valign=top>
           <table cellspacing=0 cellpadding=0 width=219 align=center>
-           <tr><td colspan=2><a class="pr_name">SIATKÓWKA</a></td></tr>
+           <tr><td colspan=2><a class="pr_name">POSTAW NA DRUŻYNĘ GOŚCI</a></td></tr>
 
-           <tr><td colspan=2><a class="ml7">PLUS LIGA KOBIET</a></td></tr>
+           <tr><td colspan=2><a class="ml7"><%= @match_h[1]['game']['description'] %></a></td></tr>
            <tr><td height=10></td></tr>
            <tr><td colspan=2 background="../images/gif/m15.gif" height=1></td></tr>
            <tr><td height=10></td></tr>
            <tr><td width=67 style="padding-left: 4px"><%= image_tag "icons/basketball.png", :alt => "basketball", :size => "60x60" %></td>
            <td width=148 valign=top>
             <table cellspacing=0 cellpadding=0>
-             <tr><td height=55><u><b>Polecamy: Kurs dnia</b></u><br>W zwycięstwo tej drużyny bukmacherzy nie wierzą. Czy dopisze jej szczęscie? Zwielokrotnij swój stan &euro;!</td></tr> 
+             <tr><td height=55><u><b>Polecamy: Kurs dnia</b></u><br>Gra na obcym terenie stanowi dodatkową trudność w osiągnięciu pozytywnego rezultatu. Czy gościom dopisze dziś szczęscie?</td></tr> 
              <tr><td height=8></td></tr>
-             <tr><td class=ch12><a href="kupon/_akcja=dodaj&kursid=">BKS Bielsko Biała: <span class=ch13>1.34!</span></a></td></tr>
+             <tr><td class=ch12><a onclick="add_match(2, <%= @match_h[1]['game']['id'] %>, <%= @match_h[1]['game']['alt2'] %>)"><%= @match_h[1]['game']['second'] %>: <span class=ch13><%= @match_h[1]['game']['alt2'] %></span></a></td></tr>
             </table>
            </td></tr>
            <tr><td height=6></td></tr>
@@ -455,7 +329,7 @@
            <tr><td colspan=2>
             <table cellspacing=0 cellpadding=0>
              <tr>
-				<td style="padding-left: 5px; padding-right: 5px;"><span class="ch19"><a class="podpowiedz"><img src="images/info.png" width="9" height="9"><span>23.03.1999 12:34 Arka Gdynia Ekstraklasa</span></a><a href="kupon/_akcja=dodaj&kursid='.mysql_result($maxKurs_index[1],0,"id").'&typ='.$maxKurs_i.'"> Postaw też: Legia 1.45 VS Lech </a></span></td>
+				<td style="padding-left: 5px; padding-right: 5px;"><img src="images/info.png" width="9" height="9"><a onclick="add_match(1, <%= @match_h[1]['game']['id'] %>, <%= @match_h[1]['game']['alt1'] %>)"> lub postaw na <%= @match_h[1]['game']['first'] %>: <%= @match_h[1]['game']['alt1'] %> </a></td>
 
 			</tr>
             </table>
@@ -497,21 +371,7 @@
 	   <tr><td height="10px"></td></tr>
 	   
 	   <tr><td>
-			<table width="520px" style="border:1px solid #0000AA; margin:5px;">
-					
-				<tr bgcolor="#525252"><td height="15"><b>OSTATNIE WIEŚCI Z SHOUTBOX'A</b></td>
-					<td width="120" rowspan="7" style="padding:5px">
-						<form id="shout" action="/" method="POST" onsubmit = "enter();" >
-							<textarea name="shout_area" id="areaa" style="border:1px solid #0000AA; background-color: #00427B; color:#FFFFFF;" rows="4">Dodaj nowy wpis!</textarea>
-							<span style="text-align:center"><input type="button" onclick = "enterek();" style="font-family: tahoma; font-size: 10pt; border: 1px solid #0000AA; background-color: #00427B; color:#FFFFFF;" value="Dodaj!"><input type="button" onclick="czysciciel();" style="font-family: tahoma; font-size: 10pt; border: 1px solid #0000AA; background-color: #00427B; color:#FFFFFF;" type="submit" value="Czyść"></span><br>
-						</form>
-					</td>
-				</tr>
-					<tr bgcolor="#00538C"><td height="15" style="margin-left:10px"><span style="color:white"><b>11:12 Jacek Placek said: Próbny wpis!</span></td></tr>
-					<tr bgcolor="#336699"><td height="15" style="margin-left:10px"><span style="color:white"><b>11:12 Jacek Placek said: Próbny wpis!</span></td></tr>
-					<tr bgcolor="#00538C"><td height="15" style="margin-left:10px"><span style="color:white"><b>11:12 Jacek Placek said: Próbny wpis!</span></td></tr>
-					<tr bgcolor="#336699"><td height="15" style="margin-left:10px"><span style="color:white"><b>11:12 Jacek Placek said: Próbny wpis!</span></td></tr>
-			</table>
+			<div id="kuponik"></div>
 	   </td></tr>
 	   <tr height="10px"></tr>
 	   <tr><td style="text-align:center"><%= image_tag "banners/ladbrokes.gif" %></td></tr>
@@ -525,6 +385,7 @@
 <!-- body_text_eof //-->
   </tr>
 </table>
+</div>
 <!-- body_eof //-->
 
 <!-- footer //-->
@@ -565,8 +426,5 @@
    </td></tr>   
   </table>
 
-
-
 <!-- footer_eof //-->
-</body>
-</html>
+

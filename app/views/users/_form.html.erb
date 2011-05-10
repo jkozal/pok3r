@@ -1,19 +1,14 @@
 <%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<center>
+<div style="background-color:#000000; padding:2px 12px 2px 12px; width:300px; height:420px; color: #FFFFFF; border-radius: 20px; -moz-border-radius: 20px; "><br/>
+  <%= link_to (image_tag "logobi.png", :alt => "logo"), root_path %><br/><br/><br/>
   <div class="field">
     <%= f.label :username %><br />
     <%= f.text_field :username %>
+  </div>
+   <div class="field">
+    <%= f.label :imie_nazwisko %><br />
+    <%= f.text_field :imie_nazwisko %>
   </div>
   <div class="field">
     <%= f.label :email %><br />
@@ -28,6 +23,18 @@
       <%= f.password_field :password_confirmation %>
     </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :value => "Zarejestruj swoje konto!" %>
   </div>
+</div>
+  <% if $user_session.errors.any? %>
+    <div id="error_explanation">
+      <h2>Podczas przetwarzania napotkano <%= pluralize($user_session.errors.count, "error") %>:</h2>
+      <ul>
+      <% $user_session.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+</center> 
 <% end %>

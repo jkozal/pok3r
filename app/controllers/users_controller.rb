@@ -6,14 +6,9 @@ class UsersController < ApplicationController
   
   def index
     @users = User.all
-	if(current_user) 
-		puts "asasasasasasasasas" 
-	else 
-		puts "dfdfdfdfdfdfdfdfdf" 
-	end
 	
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { redirect_to root_path}# index.html.erb
       format.xml  { render :xml => @users }
     end
   end
