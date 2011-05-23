@@ -13,4 +13,6 @@ Try::Application.routes.draw do
   match 'start/enter' => 'start#enter'
   match 'start/getkupon' => 'start#getkupon'
   match 'start/xmlgenerate' => 'start#xmlgenerate'
+  match 'start/kryteria' => 'start#kryteria'
+  match 'start/init' => 'start#init'
 end

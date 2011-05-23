@@ -90,6 +90,77 @@
     end
   end
   
+  def init
+	Sedna.connect :database => "test" do |sedna|
+		sedna.transaction do
+			sedna.execute 'CREATE COLLECTION "mecze"'
+			sedna.execute 'CREATE COLLECTION "wyniki"'
+			sedna.execute 'UPDATE insert <wyniki></wyniki> into collection("wyniki")'
+		end
+	end
+	respond_to do |format|
+		format.html
+	end
+  end
+  def kryteria
+	if(params[:liga] and params[:data_od] and params[:data_do] and params[:druzyna] and params[:kurs])
+		#form to xml
+		@xml_kryterium = "\n<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<kryteria>\n\t<ligi>"
+		params[:liga].each do |row|
+			@xml_kryterium += "\n\t\t<liga>"+row+"</liga>"
+		end
+		@xml_kryterium += "\n\t</ligi>"
+		if(params[:data_od])
+			@xml_kryterium += "\n\t<data_od>"+params[:data_od]+"</data_od>"
+		end
+		if(params[:data_do])
+			@xml_kryterium += "\n\t<data_do>"+params[:data_do]+"</data_do>"
+		end
+		if(params[:druzyna] and params[:kurs])
+			@xml_kryterium += "\n\t<kurs>"+params[:kurs]+"</kurs>\n\t<typ>"+params[:druzyna]+"</typ>"
+		end
+		@xml_kryterium += "\n</kryteria>\n"
+		puts @xml_kryterium
+		@c = Hash.from_xml(@xml_kryterium)
+		puts @c
+		
+		#xml to xquery
+		@ligi_query = '('
+		@od_query = ''
+		@do_query = ''
+		for i in 0..@c['kryteria']['ligi']['liga'].length-2 do
+			@ligi_query += '($i/description/category/text() = \''+@c['kryteria']['ligi']['liga'][i]+'\') or '
+		end
+		@ligi_query += '($i/description/category/text() = \''+@c['kryteria']['ligi']['liga'][@c['kryteria']['ligi']['liga'].length-1]+'\'))'
+		if(@c['kryteria']['data_od'])
+			@od_query = '($i/@date > '+@c['kryteria']['data_od']+')'
+		end
+		if(@c['kryteria']['data_do'])
+			@do_query = '($i/@date < '+@c['kryteria']['data_do']+')'
+		end
+		if(@c['kryteria']['typ'] and @c['kryteria']['kurs'])
+			@kurs_query = '($i/alternatives/alternative/@odds > '+@c['kryteria']['kurs']+') and ($i/alternatives/alternative/text() = '+@c['kryteria']['typ']+')'
+		end
+		puts "for $i in collection('mecze')/punter-odds/game where ("+@ligi_query+" and "+@od_query+" and "+@do_query+" and "+@kurs_query+") return $i"
+		Sedna.connect :database => "test" do |sedna|
+			sedna.transaction do 
+				@zap = sedna.execute "for $i in collection('mecze')/punter-odds/game where ("+@ligi_query+" and "+@od_query+" and "+@do_query+" and "+@kurs_query+") return $i"
+			end
+		end
+		
+		#query to console
+		puts @zap
+	end
+	Sedna.connect :database => "test" do |sedna|
+		sedna.transaction do
+			@rows = sedna.execute "distinct-values( collection('mecze')/punter-odds/game/description/category/text() ) "
+		end
+	end
+	@rows.sort!
+	respond_to do |format|
+	   format.html
+    end
+  end
   
   def getkupon
 	if(current_user)

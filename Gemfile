@@ -5,7 +5,6 @@ gem 'authlogic'
 gem 'daemons'
 gem 'curb'
 gem 'xml-simple'
-gem 'jquery-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
